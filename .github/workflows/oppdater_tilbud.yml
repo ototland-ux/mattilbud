@@ -11,8 +11,6 @@ jobs:
     steps:
       - name: Sjekk ut kode
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Sett opp Python
         uses: actions/setup-python@v5
@@ -27,11 +25,9 @@ jobs:
       - name: Kjør skraperen
         run: python skraper.py
 
-      - name: Oppdater tilbud.json på GitHub
-        run: |
-          git config --global user.name "Aksjons-bot"
-          git config --global user.email "bot@users.noreply.github.com"
-          git pull origin main --rebase || true
-          git add tilbud.json
-          git commit -m "Automatisk oppdatering av tilbud" || exit 0
-          git push origin main
+      - name: Send oppdatert tilbud.json til GitHub
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
+          force: true
