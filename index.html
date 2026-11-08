@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Totlands Mattilbud - Ukens beste tilbud</title>
+    <!-- Kobler til den eksterne CSS-filen for boksdesign og stil -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container header-content">
+            <div>
+                <h1 class="site-title">🛒 Totlands Mattilbud</h1>
+                <p class="site-subtitle">De beste tilbudene fra utvalgte butikker, oppdatert hver mandag.</p>
+            </div>
+            <!-- Navigasjon mellom faner -->
+            <nav class="nav-buttons">
+                <button onclick="switchTab('aktive')" id="btn-aktive" class="nav-btn active">Ukens Tilbud</button>
+                <button onclick="switchTab('historikk')" id="btn-historikk" class="nav-btn inactive">Historikk</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hovedinnhold -->
+    <main class="container main-content">
+
+        <!-- Seksjon: Ukens Aktive Tilbud -->
+        <section id="tab-aktive">
+            <div class="section-header">
+                <h2 class="section-title">Ukas beste kupp</h2>
+                <span class="update-badge">Oppdatert: Henter...</span>
+            </div>
+
+            <!-- Butikk-filter (Snarveier) -->
+            <div class="filter-bar">
+                <button class="filter-chip active">Alle</button>
+                <button class="filter-chip">Kiwi</button>
+                <button class="filter-chip">Rema 1000</button>
+                <button class="filter-chip">Coop Extra</button>
+                <button class="filter-chip">Coop Obs</button>
+                <button class="filter-chip">Bunnpris</button>
+                <button class="filter-chip">Spar</button>
+                <button class="filter-chip">Meny</button>
+                <button class="filter-chip">Holdbart</button>
+            </div>
+
+            <!-- Her fylles tilbudskortene automatisk inn fra tilbud.json via JavaScript -->
+            <div id="tilbud-grid" class="offer-grid">
+                <!-- Laster inn... -->
+            </div>
+        </section>
+
+        <!-- Seksjon: Historikk (Skjult som standard) -->
+        <section id="tab-historikk" class="hidden">
+            <div class="section-header">
+                <h2 class="section-title">Tidligere uker (Historikk)</h2>
+            </div>
+            <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 16px;">Bla i tidligere uker for å sammenligne prisutviklingen.</p>
+            
+            <div class="history-list">
+                <a href="#" class="history-item">
+                    <div>
+                        <div class="history-title">Uke 44, 2026</div>
+                        <div class="history-dates">Gjeldende: 02. nov - 08. nov</div>
+                    </div>
+                    <span class="history-link-text">Se tilbud &rarr;</span>
+                </a>
+                <a href="#" class="history-item">
+                    <div>
+                        <div class="history-title">Uke 43, 2026</div>
+                        <div class="history-dates">Gjeldende: 26. okt - 01. nov</div>
+                    </div>
+                    <span class="history-link-text">Se tilbud &rarr;</span>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p>Totlands Mattilbud &copy; 2026 &bull; Kjører på <code>/totlands/mattilbud/</code></p>
+    </footer>
+
+    <!-- JavaScript for faneveksling og henting av tilbud.json -->
+    <script>
+        // Funksjon for å bytte mellom ukens tilbud og historikk-fanen
+        function switchTab(tab) {
+            const aktiveSec = document.getElementById('tab-aktive');
+            const historikkSec = document.getElementById('tab-historikk');
+            const btnAktive = document.getElementById('btn-aktive');
+            const btnHistorikk = document.getElementById('btn-historikk');
+
+            if (tab === 'aktive') {
+                aktiveSec.classList.remove('hidden');
+                historikkSec.classList.add('hidden');
+                btnAktive.className = 'nav-btn active';
+                btnHistorikk.className = 'nav-btn inactive';
+            } else {
+                aktiveSec.classList.add('hidden');
+                historikkSec.classList.remove('hidden');
+                btnAktive.className = 'nav-btn inactive';
+                btnHistorikk.className = 'nav-btn active';
+            }
+        }
+
+        // Henter tilbud fra tilbud.json automatisk når siden lastes
+        document.addEventListener("DOMContentLoaded", () => {
+            fetch("tilbud.json")
+                .then(response => response.json())
+                .then(data => {
+                    const grid = document.getElementById("tilbud-grid");
+                    grid.innerHTML = ""; // Tømmer boksen
+
+                    // Setter ukenummer og oppdatert-tekst fra JSON-filen
+                    document.querySelector(".section-title").textContent = `Ukas beste kupp (Uke ${data.uke})`;
+                    document.querySelector(".update-badge").textContent = `Oppdatert: ${data.oppdatert}`;
+
+                    // Lager et pent tilbudskort for hvert element i JSON-filen
+                    data.tilbud.forEach(item => {
+                        const card = document.createElement("div");
+                        card.className = "offer-card";
+                        card.innerHTML = `
+                            <span class="badge-discount">${item.rabatt}</span>
+                            <div class="card-image-placeholder">Bilde mangler</div>
+                            <div class="card-body">
+                                <span class="store-label">${item.butikk}</span>
+                                <h3 class="product-title">${item.tittel}</h3>
+                                <div class="price-row">
+                                    <span class="price-current">${item.pris}</span>
+                                    <span class="price-original">${item.originalpris}</span>
+                                </div>
+                            </div>
+                        `;
+                        grid.appendChild(card);
+                    });
+                })
+                .catch(error => {
+                    console.log("Kunne ikke hente tilbud.json:", error);
+                    document.getElementById("tilbud-grid").innerHTML = "<p style='color: red; grid-column: 1/-1;'>Klarte ikke å laste inn tilbud.json. Sjekk at filen ligger i samme mappe!</p>";
+                });
+        });
+    </script>
+</body>
+</html>
