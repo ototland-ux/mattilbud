@@ -5,12 +5,17 @@ on:
     - cron: '0 5 * * 1'  # Kjører hver mandag klokken 05:00 UTC
   workflow_dispatch:      # Lar deg kjøre den manuelt fra GitHub når du vil
 
+permissions:
+  contents: write
+
 jobs:
   skrap-og-oppdater:
     runs-on: ubuntu-latest
     steps:
       - name: Sjekk ut kode
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Sett opp Python
         uses: actions/setup-python@v5
@@ -25,9 +30,8 @@ jobs:
       - name: Kjør skraperen
         run: python skraper.py
 
-      - name: Send oppdatert tilbud.json til GitHub
-        uses: ad-m/github-push-action@master
+      - name: Commit og push endringer
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
-          force: true
+          commit_message: "Automatisk oppdatering av tilbud.json"
+          file_pattern: "tilbud.json"
