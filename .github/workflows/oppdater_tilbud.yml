@@ -3,7 +3,7 @@ name: Ukentlig Mattilbud Skraper
 on:
   schedule:
     - cron: '0 5 * * 1'  # Kjører hver mandag klokken 05:00 UTC
-  workflow_dispatch:      # Lar deg kjøre den manuelt når du vil
+  workflow_dispatch:      # Lar deg kjøre den manuelt fra GitHub når du vil
 
 jobs:
   skrap-og-oppdater:
@@ -17,6 +17,11 @@ jobs:
         with:
           python-version: '3.10'
 
+      - name: Installer nødvendige biblioteker
+        run: |
+          pip install --upgrade pip
+          pip install requests beautifulsoup4
+
       - name: Kjør skraperen
         run: python skraper.py
 
@@ -25,5 +30,5 @@ jobs:
           git config --global user.name "Aksjons-bot"
           git config --global user.email "bot@users.noreply.github.com"
           git add tilbud.json
-          git commit -m "Automatisk oppdatering av tilbud" || exit 0
+          git commit -m "Automatisk oppdatering av tilbud fra skraper" || exit 0
           git push
