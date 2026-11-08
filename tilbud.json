@@ -1,7 +1,7 @@
 {
     "uke": 45,
     "aar": 2026,
-    "oppdatert": "Mandag 09. nov",
+    "oppdatert": "sunday 08. nov",
     "tilbud": [
         {
             "butikk": "Kiwi",
@@ -11,25 +11,18 @@
             "rabatt": "-30%"
         },
         {
+            "butikk": "Meny",
+            "tittel": "Entrecôte pr kg",
+            "pris": "299,00 kr",
+            "originalpris": "399,00 kr",
+            "rabatt": "-25%"
+        },
+        {
             "butikk": "Holdbart",
             "tittel": "Pepsi Max 4-pakk",
             "pris": "49,00 kr",
             "originalpris": "+ pant",
             "rabatt": "Kupp"
-        },
-        {
-            "butikk": "Rema 1000",
-            "tittel": "Bama Bananer (kg)",
-            "pris": "19,90 kr",
-            "originalpris": "26,90 kr",
-            "rabatt": "-25%"
-        },
-        {
-            "butikk": "Coop Extra",
-            "tittel": "Gilde Kjøttdeig 400g",
-            "pris": "34,90 kr",
-            "originalpris": "49,90 kr",
-            "rabatt": "-30%"
         }
     ]
 }
