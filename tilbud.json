@@ -1,20 +1,27 @@
 {
-    "uke": 45,
+    "uke": 46,
     "aar": 2026,
-    "oppdatert": "sunday 08. nov",
+    "oppdatert": "monday 09. nov",
     "tilbud": [
         {
-            "butikk": "Kiwi",
+            "butikk": "Meny",
+            "tittel": "Fersk Entrecôte pr kg",
+            "pris": "289,00 kr",
+            "originalpris": "399,00 kr",
+            "rabatt": "-28%"
+        },
+        {
+            "butikk": "Meny",
             "tittel": "Norvegia Gulost 1kg",
             "pris": "89,90 kr",
             "originalpris": "129,00 kr",
             "rabatt": "-30%"
         },
         {
-            "butikk": "Meny",
-            "tittel": "Entrecôte pr kg",
-            "pris": "299,00 kr",
-            "originalpris": "399,00 kr",
+            "butikk": "Kiwi",
+            "tittel": "Bama Bananer (kg)",
+            "pris": "19,90 kr",
+            "originalpris": "26,90 kr",
             "rabatt": "-25%"
         },
         {
